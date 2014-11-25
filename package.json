@@ -1,0 +1,26 @@
+{
+  "name": "serverpilot-node",
+  "version": "0.1.0",
+  "description": "A Node wrapper to communicate with the ServerPilot API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jplhomer/serverpilot-node.git"
+  },
+  "keywords": [
+    "node",
+    "serverpilot"
+  ],
+  "author": "Joshua P. Larson <jplhomer@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jplhomer/serverpilot-node/issues"
+  },
+  "homepage": "https://github.com/jplhomer/serverpilot-node",
+  "dependencies": {
+    "restler": "^3.2.2"
+  }
+}
