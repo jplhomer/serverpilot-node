@@ -15,7 +15,7 @@ describe('Servers', function() {
     describe('.getServers()', function() {
         it('should get all servers', function(done) {
             sp.getServers(function(err, data) {
-                if ( err ) { done(err); }
+                if ( err ) { return done(err); }
                 data.should.be.an.Object;
                 data.data.should.be.an.Object;
                 done();
