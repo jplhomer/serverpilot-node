@@ -5,6 +5,8 @@ var sp = new ServerPilot({
 });
 
 // List out servers
-var servers = sp.getServers( function(response) {
-    console.log(response.data);
+var servers = sp.getServers( function(err, data) {
+    if ( err ) { console.log( err.message ); }
+
+    console.log(data.data);
 });

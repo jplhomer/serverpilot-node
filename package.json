@@ -4,7 +4,7 @@
   "description": "A Node wrapper to communicate with the ServerPilot API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test/*.js -t 15000"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/jplhomer/serverpilot-node",
   "dependencies": {
-    "restler": "^3.2.2"
+    "restler": "^3.2.2",
+    "should": "^4.3.0"
   }
 }
