@@ -10,7 +10,7 @@ var options = {
 };
 
 function catchAppException(options) {
-    return function () {
+    return function() {
         try {
             new ServerPilot(options);
         } catch (e) {
@@ -30,6 +30,9 @@ describe('Apps', function() {
         });
 
         // Create a dummy server
+        sp.createServer('testserver', function(err, data) {
+            serverId = data.data.id;
+        });
     });
 
     describe('.getApps()', function() {
@@ -43,9 +46,9 @@ describe('Apps', function() {
         });
     });
 
-    // descript('.createApp(options)', function() {
+    describe('.createApp(options)', function() {
 
-    // });
+    });
 
     describe('.getApp(id)', function() {
         it('should get an app', function(done) {
@@ -60,6 +63,7 @@ describe('Apps', function() {
 
     after(function() {
         // Destroy the server
+        sp.deleteServer(serverId, function(err, data) {});
     })
 
 });
