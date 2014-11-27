@@ -1,6 +1,13 @@
 var should = require('should');
 var ServerPilot = require('..');
 var appId = 'CxrESKx9GXko9wen';
+var serverId;
+var options = {
+    name: 'testapp',
+    sysuserid: '',
+    runtime: 'php5.5',
+    domains: ['testapp.com']
+};
 
 function catchAppException(options) {
     return function () {
@@ -21,6 +28,8 @@ describe('Apps', function() {
             clientId: process.env.SP_CLIENT_ID,
             apiKey: process.env.SP_API_KEY
         });
+
+        // Create a dummy server
     });
 
     describe('.getApps()', function() {
@@ -34,6 +43,10 @@ describe('Apps', function() {
         });
     });
 
+    // descript('.createApp(options)', function() {
+
+    // });
+
     describe('.getApp(id)', function() {
         it('should get an app', function(done) {
             sp.getApp( appId, function(err, data) {
@@ -44,4 +57,9 @@ describe('Apps', function() {
             });
         });
     });
+
+    after(function() {
+        // Destroy the server
+    })
+
 });
