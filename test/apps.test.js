@@ -20,6 +20,17 @@ function catchCreateAppException(opts) {
     };
 }
 
+function catchDeleteAppException (id) {
+    return function() {
+        try {
+            sp.deleteApp(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class with id: ' + id);
+    };
+}
+
 describe('Apps', function() {
 
     before(function(done) {
@@ -90,6 +101,21 @@ describe('Apps', function() {
             });
         });
     });
+
+    describe('.deleteApp(id)', function() {
+        it('should throw when no id passed', catchDeleteAppException());
+        it('should delete the app', function(done) {
+            sp.deleteApp( appId, function(err, data) {
+                if (err) { return done(err); }
+
+                sp.getApp(appId, function(err, data) {
+                    if ( err ) {
+                        done();
+                    }
+                });
+            });
+        })
+    })
 
     after(function(done) {
         // Destroy the server
