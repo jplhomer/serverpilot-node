@@ -1,5 +1,6 @@
 var should = require('should');
 var ServerPilot = require('..');
+var sp;
 var serverId, apikey, actionid;
 var serverName = 'testserver';
 var firewall = true;
@@ -39,7 +40,6 @@ function catchDeleteServerException(id) {
 }
 
 describe('Servers', function() {
-    var sp;
 
     before(function() {
         sp = new ServerPilot({
