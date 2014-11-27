@@ -20,7 +20,18 @@ function catchCreateAppException(opts) {
     };
 }
 
-function catchDeleteAppException (id) {
+function catchUpdateAppException(opts) {
+    return function() {
+        try {
+            sp.updateApp(opts, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class with options: ' + JSON.stringify(opts));
+    };
+}
+
+function catchDeleteAppException(id) {
     return function() {
         try {
             sp.deleteApp(id, function() {} );
@@ -102,6 +113,27 @@ describe('Apps', function() {
         });
     });
 
+    describe('.updateApp(options)', function() {
+        it('should throw when no options passed', catchUpdateAppException());
+        it('should throw when empty options passed', catchUpdateAppException({}));
+        it('should throw when no appId passed', catchUpdateAppException({ runtime: 'php5.6' }));
+        it('should throw when neither are passed: runtime, domains', catchUpdateAppException({ appId: appId }));
+        it('should update app', function(done) {
+            var opts = {
+                appId: appId,
+                runtime: 'php5.6',
+                domains: ['mail.google.com','google.com']
+            };
+            sp.updateApp(opts, function(err, data) {
+                if (err) { return done(err); }
+
+                data.data.runtime.should.eql(opts.runtime);
+                data.data.domains.should.eql(opts.domains);
+                done();
+            })
+        })
+    });
+
     describe('.deleteApp(id)', function() {
         it('should throw when no id passed', catchDeleteAppException());
         it('should delete the app', function(done) {
@@ -115,7 +147,7 @@ describe('Apps', function() {
                 });
             });
         })
-    })
+    });
 
     after(function(done) {
         // Destroy the server
