@@ -2,15 +2,28 @@ var should = require('should');
 var ServerPilot = require('..');
 var serverId, apikey, actionid;
 var serverName = 'testserver';
+var firewall = true;
+var autoupdates = true;
 
-function catchServerException(options) {
-    return function () {
+function catchServerException(name) {
+    return function() {
         try {
-            sp.createServer(options, function(){} );
+            sp.createServer(name, function(){} );
         } catch (e) {
             return;
         }
-        throw new Error('No error throw by class with options: ' + JSON.stringify(options));
+        throw new Error('No error throw by class with name: ' + name);
+    };
+}
+
+function catchUpdateServerException(options) {
+    return function() {
+        try {
+            sp.updateServer(options, function() {} );
+        } catch (e) {
+            return;
+        }
+        throw new Error('No error throw by class with options' + JSON.stringify(options));
     };
 }
 
@@ -62,6 +75,31 @@ describe('Servers', function() {
                 if ( err ) { done(err); }
                 data.should.be.an.Object;
                 data.data.should.be.an.Object;
+                done();
+            });
+        });
+    });
+
+    describe('.updateServer(options)', function() {
+        it('should throw when no options are passed', catchUpdateServerException());
+        it('should throw when empty options object passed', catchUpdateServerException({}));
+        it('should throw when options object does not contain: serverId', catchUpdateServerException({ firewall: true }));
+        it('should throw when option values are not boolean: firewall or autoupdates', catchUpdateServerException({ serverId: serverId, firewall: '', autoupdates: '' }));
+        it('should update the server', function(done) {
+            var updateOptions = {
+                serverId: serverId,
+                firewall: firewall,
+                autoupdates: autoupdates
+            };
+
+            sp.updateServer(updateOptions, function(err, data) {
+                if (err) { return done(err); }
+
+                // Match up known things about our server
+                data.data.id.should.eql(serverId);
+                data.data.autoupdates.should.eql(autoupdates);
+                data.data.firewall.should.eql(firewall);
+
                 done();
             });
         });
