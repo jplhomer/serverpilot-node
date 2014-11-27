@@ -23,7 +23,18 @@ function catchUpdateServerException(options) {
         } catch (e) {
             return;
         }
-        throw new Error('No error throw by class with options' + JSON.stringify(options));
+        throw new Error('No error throw by class with options: ' + JSON.stringify(options));
+    };
+}
+
+function catchDeleteServerException(id) {
+    return function() {
+        try {
+            sp.deleteServer(id, function() {} );
+        } catch (e) {
+            return;
+        }
+        throw new Error('No error throw by class with id: ' + id);
     };
 }
 
@@ -104,4 +115,23 @@ describe('Servers', function() {
             });
         });
     });
+
+    describe('.deleteServer(id)', function() {
+        it('should throw when no id is passed', catchDeleteServerException());
+        it('should delete server', function(done) {
+            sp.deleteServer(serverId, function(err, data) {
+                if (err) { return done(err); }
+
+                // Check to see that the server doesn't exist anymore
+                sp.getServers(function(err, data) {
+                    if (err) { return done(err); }
+
+                    var servers = data.data;
+                    servers.should.not.containDeep({id: serverId});
+                    done();
+                })
+            })
+        })
+    })
+
 });
