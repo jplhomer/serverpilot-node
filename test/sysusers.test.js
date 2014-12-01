@@ -59,7 +59,7 @@ describe('System Users', function() {
         });
 
         // Create a dummy server
-        sp.createServer('testserver', function(err, data) {
+        sp.createServer('testserver' + Math.floor(new Date() / 1000), function(err, data) {
             if (err) { done(err); }
 
             serverId = data.data.id;

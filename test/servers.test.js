@@ -2,7 +2,7 @@ var should = require('should');
 var ServerPilot = require('..');
 var sp;
 var serverId, apikey, actionid;
-var serverName = 'testserver';
+var serverName = 'testserver' + Math.floor(new Date() / 1000);
 var firewall = true;
 var autoupdates = true;
 

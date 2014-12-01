@@ -58,7 +58,7 @@ describe('Databases', function() {
         });
 
         // Create a dummy server
-        sp.createServer('testserver', function(err, data) {
+        sp.createServer('testserver' + Math.floor(new Date() / 1000), function(err, data) {
             serverId = data.data.id;
 
             // Get the sysuserid of that server
@@ -73,7 +73,7 @@ describe('Databases', function() {
 
                 // Create a dummy app
                 sp.createApp({
-                    name: 'testapp',
+                    name: 'testapp' + Math.floor(new Date() / 1000),
                     sysuserid: sysUserId,
                     runtime: 'php5.5',
                     domains: ['testapp.com']
