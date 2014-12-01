@@ -75,7 +75,7 @@ describe('Databases', function() {
 
                 // Create a dummy app
                 sp.createApp({
-                    name: 'testapp' + process.version,
+                    name: 'testapp',
                     sysuserid: sysUserId,
                     runtime: 'php5.5',
                     domains: ['testapp.com']

@@ -4,7 +4,7 @@ var ServerPilot = require('..');
 var sp;
 var appId, serverId;
 var options = {
-    name: 'testapp' + process.version,
+    name: 'testapp',
     sysuserid: '',
     runtime: 'php5.5',
     domains: ['testapp.com']
