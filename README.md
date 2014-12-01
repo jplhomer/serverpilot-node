@@ -47,6 +47,12 @@ To run tests, ensure you have Mocha installed on your system.
 $ npm install -g mocha
 ```
 
+Next, set your environmental variables like this:
+
+```sh
+$ export SP_CLIENT_ID=YOURCLIENTID SP_API_KEY=YOURAPIKEY
+```
+
 Then run all the tests using this handy shortcut:
 
 ```sh
