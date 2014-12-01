@@ -1,6 +1,6 @@
 var should = require('should');
 var ServerPilot = require('..');
-var sp, appId, serverId, sysUserId, databaseId;
+var sp, appId, serverId, sysUserId, databaseId, databaseUserId;
 var databaseName = 'testdatabase',
     databaseUserName = 'testdatauser'
     databaseUserPass = 'testdatauserpass';
@@ -24,6 +24,17 @@ function catchGetDatabaseException(id) {
             return;
         }
         throw new Error('No error throw from class with ID:' + id);
+    };
+}
+
+function catchUpdateDatabaseException(options) {
+    return function() {
+        try {
+            sp.updateDatabase(options, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw from class with options:' + JSON.stringify(options));
     };
 }
 
@@ -121,6 +132,7 @@ describe('Databases', function() {
 
                 // Set id for future use
                 databaseId = data.data.id;
+                databaseUserId = data.data.user.id;
 
                 done();
             });
@@ -135,6 +147,38 @@ describe('Databases', function() {
 
                 data.data.id.should.eql(databaseId);
 
+                done();
+            });
+        });
+    });
+
+    describe('.updateDatabase(options)', function() {
+        it('should throw when no options passed', catchUpdateDatabaseException());
+        it('should throw when no user.id passed', catchUpdateDatabaseException({
+            databaseId: databaseId,
+            name: databaseName,
+            user: {
+                password: 'mynewpassword'
+            }
+        }));
+        it('should throw when no user.password passed', catchUpdateDatabaseException({
+            databaseId: databaseId,
+            name: databaseName,
+            user: {
+                id: databaseUserId
+            }
+        }));
+        it('should update database user password', function(done) {
+            sp.updateDatabase({
+                databaseId: databaseId,
+                user: {
+                    id: databaseUserId,
+                    password: 'mynewpassword'
+                }
+            }, function(err, data) {
+                if (err) { return done(err); }
+
+                // No way to verify password change
                 done();
             });
         });
