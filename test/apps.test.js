@@ -1,4 +1,5 @@
 var should = require('should');
+var fs = require('fs');
 var ServerPilot = require('..');
 var sp;
 var appId, serverId;
@@ -8,6 +9,7 @@ var options = {
     runtime: 'php5.5',
     domains: ['testapp.com']
 };
+var sslKey, sslCert;
 
 function catchCreateAppException(opts) {
     return function() {
@@ -42,6 +44,17 @@ function catchDeleteAppException(id) {
     };
 }
 
+function catchAddSSLException(opts) {
+    return function() {
+        try {
+            sp.addSSL(opts, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class with options: ' + JSON.stringify(opts));
+    };
+}
+
 describe('Apps', function() {
 
     before(function(done) {
@@ -62,7 +75,20 @@ describe('Apps', function() {
                     if (sysusers[i].serverid === serverId) {
                         options.sysuserid = sysusers[i].id;
 
-                        done();
+                        // Load in the contents of the SSL Key and Cert
+                        fs.readFile(__dirname + '/dummy.key', 'ascii', function(err, data) {
+                            if (err) { return done(err); }
+
+                            sslKey = data;
+
+                            fs.readFile(__dirname + '/dummy.cert', 'ascii', function(err, data) {
+                                if (err) { return done(err); }
+
+                                sslCert = data;
+
+                                done();
+                            })
+                        });
                     }
                 }
             });
@@ -132,6 +158,27 @@ describe('Apps', function() {
                 done();
             })
         })
+    });
+
+    describe('.addSSL(options)', function() {
+        it('should throw when no options passed', catchAddSSLException());
+        it('should throw when no appId passed', catchAddSSLException({ key: sslKey, cert: sslCert, cacerts: null }));
+        it('should throw when no key passed', catchAddSSLException({ appId: appId, cert: sslCert, cacerts: null }));
+        it('should throw when no cert passed', catchAddSSLException({ appId: appId, key: sslKey, cacerts: null }));
+        it('should add SSL to the app', function(done) {
+            sp.addSSL({
+                appId: appId,
+                key: sslKey,
+                cert: sslCert,
+                cacerts: null
+            }, function(err, data) {
+                if (err) { return done(err); }
+
+                data.data.key.should.eql(sslKey);
+                data.data.cert.should.eql(sslCert);
+                done();
+            })
+        });
     });
 
     describe('.deleteApp(id)', function() {
