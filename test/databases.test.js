@@ -53,6 +53,17 @@ describe('Databases', function() {
         });
     });
 
+    describe('.getDatabases()', function() {
+        it('should get all databases`', function(done) {
+            sp.getDatabases(function(err, data) {
+                if (err) { return done(err); }
+                data.should.be.an.Object;
+                data.data.should.be.an.Object;
+                done();
+            });
+        });
+    });
+
     describe('.createDatabase(options)', function() {
         it('should throw when no options passed', catchCreateDatabaseException());
         it('should throw when no appId passed', catchCreateDatabaseException({
