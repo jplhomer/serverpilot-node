@@ -76,6 +76,8 @@ describe('Apps', function() {
 
         // Create a dummy server
         sp.createServer('testserver', function(err, data) {
+            if (err) { console.log(err.message); }
+
             serverId = data.data.id;
 
             // Get the sysuserid of that server
