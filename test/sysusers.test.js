@@ -6,7 +6,7 @@ var sysUserId;
 var name = 'testuser';
 var password = '#1password';
 
-function catchAddSysUser(opts) {
+function catchCreateSysUser(opts) {
     return function() {
         try {
             sp.addSysUser(opts, function() {} );
@@ -67,12 +67,12 @@ describe('System Users', function() {
         });
     });
 
-    describe('.addSysUser()', function() {
-        it('should throw when no options passed', catchAddSysUser());
-        it('should throw when empty options passed', catchAddSysUser({}));
-        it('should throw when no serverid passed', catchAddSysUser({ name: name }));
-        it('should throw when no name passed', catchAddSysUser({ serverid: serverId }));
-        // it('should throw when invalid name is passed', catchAddSysUser({ name: 'Test User', serverid: serverId }));
+    describe('.createSysUser()', function() {
+        it('should throw when no options passed', catchCreateSysUser());
+        it('should throw when empty options passed', catchCreateSysUser({}));
+        it('should throw when no serverid passed', catchCreateSysUser({ name: name }));
+        it('should throw when no name passed', catchCreateSysUser({ serverid: serverId }));
+        // it('should throw when invalid name is passed', catchCreateSysUser({ name: 'Test User', serverid: serverId }));
         it('should add sysuser', function(done) {
             var opts = {
                 serverid: serverId,
@@ -80,7 +80,7 @@ describe('System Users', function() {
                 password: password
             };
 
-            sp.addSysUser(opts, function(err, data) {
+            sp.createSysUser(opts, function(err, data) {
                 if (err) { return done(err); }
 
                 data.data.name.should.eql(opts.name);
