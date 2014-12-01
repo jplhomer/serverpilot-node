@@ -39,6 +39,17 @@ function catchDeleteSysUser(id) {
     };
 }
 
+function catchUpdateSysUser(options) {
+    return function() {
+        try {
+            sp.updateSysUser(options, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class for options: ' + JSON.stringify(options));
+    };
+}
+
 describe('System Users', function() {
 
     before(function(done) {
@@ -67,7 +78,7 @@ describe('System Users', function() {
         });
     });
 
-    describe('.createSysUser()', function() {
+    describe('.createSysUser(options)', function() {
         it('should throw when no options passed', catchCreateSysUser());
         it('should throw when empty options passed', catchCreateSysUser({}));
         it('should throw when no serverid passed', catchCreateSysUser({ name: name }));
@@ -99,6 +110,26 @@ describe('System Users', function() {
                 if ( err ) { return done(err); }
                 data.should.be.an.Object;
                 data.data.should.be.an.Object;
+                done();
+            });
+        });
+    });
+
+    describe('.updateSysUser(options)', function() {
+        it('should throw when no options passed', catchUpdateSysUser());
+        it('should throw when no password passed', catchUpdateSysUser({ sysUserId: sysUserId }));
+        it('should throw when password less than 8 characters', catchUpdateSysUser({ password: 'test456', sysUserId: sysUserId }));
+        it('should throw when no sysUserId passed', catchUpdateSysUser({ password: 'test45678', sysUserId: sysUserId }));
+        it('should update sysuser', function(done) {
+            var updateOpts = {
+                sysUserId: sysUserId,
+                password: 'test45678'
+            };
+
+            sp.updateSysUser(updateOpts, function(err, data) {
+                if (err) { return done(err); }
+
+                // Yeah, really no way to verify that this worked.
                 done();
             });
         });
