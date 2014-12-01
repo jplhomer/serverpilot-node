@@ -16,6 +16,17 @@ function catchCreateDatabaseException(options) {
     };
 }
 
+function catchGetDatabaseException(id) {
+    return function() {
+        try {
+            sp.getDatabase(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw from class with ID:' + id);
+    };
+}
+
 describe('Databases', function() {
 
     before(function(done) {
@@ -107,6 +118,22 @@ describe('Databases', function() {
 
                 data.data.name.should.eql(databaseName);
                 data.data.user.name.should.eql(databaseUserName);
+
+                // Set id for future use
+                databaseId = data.data.id;
+
+                done();
+            });
+        });
+    });
+
+    describe('.getDatabase(id)', function() {
+        it('should throw when no id passed', catchGetDatabaseException());
+        it('should get a database', function(done) {
+            sp.getDatabase(databaseId, function(err, data) {
+                if (err) { return done(err); }
+
+                data.data.id.should.eql(databaseId);
 
                 done();
             });
