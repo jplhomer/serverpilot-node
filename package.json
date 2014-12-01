@@ -1,6 +1,6 @@
 {
   "name": "serverpilot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A Node wrapper to communicate with the ServerPilot API",
   "main": "index.js",
   "scripts": {
