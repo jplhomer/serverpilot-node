@@ -2,6 +2,7 @@ var should = require('should');
 var ServerPilot = require('..');
 var sp;
 var serverId;
+var sysUserId;
 var name = 'testuser';
 var password = '#1password';
 
@@ -16,6 +17,17 @@ function catchAddSysUser(opts) {
     };
 }
 
+function catchGetSysUser(id) {
+    return function() {
+        try {
+            sp.getSysUser(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class for id: ' + id);
+    };
+}
+
 describe('System Users', function() {
 
     before(function(done) {
@@ -26,6 +38,8 @@ describe('System Users', function() {
 
         // Create a dummy server
         sp.createServer('testserver', function(err, data) {
+            if (err) { done(err); }
+
             serverId = data.data.id;
             done();
         })
@@ -60,6 +74,20 @@ describe('System Users', function() {
 
                 data.data.name.should.eql(opts.name);
                 data.data.serverid.should.eql(opts.serverid);
+
+                sysUserId = data.data.id;
+                done();
+            });
+        });
+    });
+
+    describe('.getSysUser(id)', function() {
+        it('should throw when no id passed', catchGetSysUser());
+        it('should get the sysuser', function(done) {
+            sp.getSysUser(sysUserId, function(err, data) {
+                if ( err ) { return done(err); }
+                data.should.be.an.Object;
+                data.data.should.be.an.Object;
                 done();
             });
         });
