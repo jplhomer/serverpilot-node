@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/jplhomer/serverpilot-node",
   "dependencies": {
-    "mocha": "^1.21.5",
-    "restler": "^2.0.0",
+    "mocha": "^2.0.1",
+    "restler": "^3.2.2",
     "should": "^4.3.0"
   }
 }
