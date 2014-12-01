@@ -38,6 +38,17 @@ function catchUpdateDatabaseException(options) {
     };
 }
 
+function catchDeleteDatabaseException(id) {
+    return function() {
+        try {
+            sp.deleteDatabase(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw from class with id:' + id);
+    };
+}
+
 describe('Databases', function() {
 
     before(function(done) {
@@ -180,6 +191,21 @@ describe('Databases', function() {
 
                 // No way to verify password change
                 done();
+            });
+        });
+    });
+
+    describe('.deleteDatabase(id)', function() {
+        it('should throw when no id passed', catchDeleteDatabaseException());
+        it('should delete the database', function(done) {
+            sp.deleteDatabase(databaseId, function(err, data) {
+                if (err) { return done(err); }
+
+                sp.getDatabase(databaseId, function(err, data) {
+                    if ( err ) {
+                        done();
+                    }
+                });
             });
         });
     });
