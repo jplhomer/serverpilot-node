@@ -28,6 +28,17 @@ function catchGetSysUser(id) {
     };
 }
 
+function catchDeleteSysUser(id) {
+    return function() {
+        try {
+            sp.deleteSysUser(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class for id: ' + id);
+    };
+}
+
 describe('System Users', function() {
 
     before(function(done) {
@@ -89,6 +100,22 @@ describe('System Users', function() {
                 data.should.be.an.Object;
                 data.data.should.be.an.Object;
                 done();
+            });
+        });
+    });
+
+    describe('.deleteSysUser(id)', function() {
+        it('should throw when no id passed', catchDeleteSysUser());
+        it('should delete the sysuser', function(done) {
+            sp.deleteSysUser(sysUserId, function(err, data) {
+                if (err) { return done(err); }
+
+                // Make sure the user is gone
+                sp.getSysUser(sysUserId, function(err, data) {
+                    if (err) {
+                        done();
+                    }
+                });
             });
         });
     });
