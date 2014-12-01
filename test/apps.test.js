@@ -4,7 +4,7 @@ var ServerPilot = require('..');
 var sp;
 var appId, serverId;
 var options = {
-    name: 'testapp' + Math.floor(new Date() / 1000),
+    name: 'testapp' + process.version,
     sysuserid: '',
     runtime: 'php5.5',
     domains: ['testapp.com']
@@ -75,7 +75,7 @@ describe('Apps', function() {
         });
 
         // Create a dummy server
-        sp.createServer('testserver' + Math.floor(new Date() / 1000), function(err, data) {
+        sp.createServer('testserver' + process.version, function(err, data) {
             if (err) { console.log(err.message); }
 
             serverId = data.data.id;

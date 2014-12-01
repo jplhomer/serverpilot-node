@@ -58,7 +58,7 @@ describe('Databases', function() {
         });
 
         // Create a dummy server
-        sp.createServer('testserver' + Math.floor(new Date() / 1000), function(err, data) {
+        sp.createServer('testserver' + process.version, function(err, data) {
             if (err) { console.log(err.message); }
 
             serverId = data.data.id;
@@ -75,7 +75,7 @@ describe('Databases', function() {
 
                 // Create a dummy app
                 sp.createApp({
-                    name: 'testapp' + Math.floor(new Date() / 1000),
+                    name: 'testapp' + process.version,
                     sysuserid: sysUserId,
                     runtime: 'php5.5',
                     domains: ['testapp.com']
