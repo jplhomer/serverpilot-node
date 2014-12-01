@@ -59,6 +59,8 @@ describe('Databases', function() {
 
         // Create a dummy server
         sp.createServer('testserver' + Math.floor(new Date() / 1000), function(err, data) {
+            if (err) { console.log(err.message); }
+
             serverId = data.data.id;
 
             // Get the sysuserid of that server
