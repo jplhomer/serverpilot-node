@@ -55,6 +55,17 @@ function catchAddSSLException(opts) {
     };
 }
 
+function catchDeleteSSLException(id) {
+    return function() {
+        try {
+            sp.deleteSSL(id, function() {} );
+        } catch(e) {
+            return;
+        }
+        throw new Error('No error throw by class with id: ' + id);
+    };
+}
+
 describe('Apps', function() {
 
     before(function(done) {
@@ -176,8 +187,22 @@ describe('Apps', function() {
 
                 data.data.key.should.eql(sslKey);
                 data.data.cert.should.eql(sslCert);
+                should(data.data.cacerts).not.be.ok;
                 done();
             })
+        });
+    });
+
+    describe('.deleteSSL(id)', function() {
+        it('should throw when no appId passed', catchDeleteSSLException());
+        it('should delete SSL from an app', function(done) {
+            sp.deleteSSL(appId, function(err, data) {
+                if (err) { return done(err); }
+
+                data.data.should.not.have.a.length;
+
+                done();
+            });
         });
     });
 
