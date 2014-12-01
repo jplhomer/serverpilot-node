@@ -1,6 +1,8 @@
 Node.JS Wrapper for the ServerPilot API
 ================
 
+[![Build Status](https://travis-ci.org/jplhomer/serverpilot-node.svg?branch=master)](https://travis-ci.org/jplhomer/serverpilot-node)
+
 This is a simple Node.JS wrapper to communicate with the [ServerPilot](http://serverpilot.io) API.
 
 Check out the [official ServerPilot API documentation](https://github.com/ServerPilot/API) for more information on using the ServerPilot API.
