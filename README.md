@@ -51,7 +51,7 @@ sp.getServers( function(err, data) {
 
 // Get a single server
 var serverId = '123456';
-sp.getServers(serverId, function(err, data) {});
+sp.getServer(serverId, function(err, data) {});
 
 // Create a server
 var serverName = 'newserver';
