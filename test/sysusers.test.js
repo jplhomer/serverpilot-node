@@ -78,7 +78,7 @@ describe('System Users', function() {
         });
     });
 
-    describe('.createSysUser(options)', function() {
+    describe.skip('.createSysUser(options)', function() {
         it('should throw when no options passed', catchCreateSysUser());
         it('should throw when empty options passed', catchCreateSysUser({}));
         it('should throw when no serverid passed', catchCreateSysUser({ name: name }));
@@ -103,7 +103,7 @@ describe('System Users', function() {
         });
     });
 
-    describe('.getSysUser(id)', function() {
+    describe.skip('.getSysUser(id)', function() {
         it('should throw when no id passed', catchGetSysUser());
         it('should get the sysuser', function(done) {
             sp.getSysUser(sysUserId, function(err, data) {
@@ -115,7 +115,7 @@ describe('System Users', function() {
         });
     });
 
-    describe('.updateSysUser(options)', function() {
+    describe.skip('.updateSysUser(options)', function() {
         it('should throw when no options passed', catchUpdateSysUser());
         it('should throw when no password passed', catchUpdateSysUser({ sysUserId: sysUserId }));
         it('should throw when password less than 8 characters', catchUpdateSysUser({ password: 'test456', sysUserId: sysUserId }));
@@ -135,7 +135,7 @@ describe('System Users', function() {
         });
     });
 
-    describe('.deleteSysUser(id)', function() {
+    describe.skip('.deleteSysUser(id)', function() {
         it('should throw when no id passed', catchDeleteSysUser());
         it('should delete the sysuser', function(done) {
             sp.deleteSysUser(sysUserId, function(err, data) {
