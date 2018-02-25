@@ -173,7 +173,7 @@ describe('Apps', function() {
         })
     });
 
-    describe('.addSSL(options)', function() {
+    describe.skip('.addSSL(options)', function() {
         it('should throw when no options passed', catchAddSSLException());
         it('should throw when no appId passed', catchAddSSLException({ key: sslKey, cert: sslCert, cacerts: null }));
         it('should throw when no key passed', catchAddSSLException({ appId: appId, cert: sslCert, cacerts: null }));
@@ -195,7 +195,7 @@ describe('Apps', function() {
         });
     });
 
-    describe('.deleteSSL(id)', function() {
+    describe.skip('.deleteSSL(id)', function() {
         it('should throw when no appId passed', catchDeleteSSLException());
         it('should delete SSL from an app', function(done) {
             sp.deleteSSL(appId, function(err, data) {
